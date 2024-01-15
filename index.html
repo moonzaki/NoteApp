@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <style>
+        * {
+            font-family: Monospace;
+        }
+
+        #app {
+            margin: 0 auto;
+            width: fit-content;
+        }
+
+        .new-note {
+            display: flex;
+            flex-direction: column;
+            width: fit-content;
+            gap: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- app -->
+        <h1> {{ title }} </h1>
+        <div class="message" v-if="message">
+            <p> {{ message }} </p>
+        </div>
+        <div class="control">
+            <div class="new-note">
+                <input v-model="note.title" type="text">
+                <textarea v-model="note.descr" name="" id="" style="resize: none;"></textarea>
+                <button @click="addNote">New note</button>
+            </div>
+        </div>
+        <div class="notes">
+            <div class="note" v-for="(note, index) in notes" :key="index">
+                <div class="note__header">
+                    <h2> {{ note.title }} </h2>
+                </div>
+                <div class="note__body">
+                    <p> {{ note.descr }} </p>
+                    <span> {{ note.date }} </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                title: 'Notes App',
+                message: null,
+                note: {
+                    title: '',
+                    descr: ''
+                },
+                notes: [
+                    {
+                        title: 'First Note',
+                        descr: 'Description for first note',
+                        date: new Date(Date.now()).toLocaleString()
+                    },
+                    {
+                        title: 'Second Note',
+                        descr: 'Description for second note',
+                        date: new Date(Date.now()).toLocaleString()
+                    },
+                    {
+                        title: 'Third Note',
+                        descr: 'Description for third note',
+                        date: new Date(Date.now()).toLocaleString()
+                    },
+                ]
+            },
+            methods: {
+                addNote() {
+                    let { title, descr } = this.note;
+                    if (title === '') {
+                        this.message = 'Title node can`t be blank!';
+                        return false;
+                    }
+
+                    this.notes.push({
+                        title,
+                        descr,
+                        date: new Date(Date.now()).toLocaleString(),
+                    });
+
+                    this.note.title = '';
+                    this.note.descr = '';
+                    this.message = null;
+                }
+
+            },
+            created() { // before reder DOM
+
+            },
+            mounted() { // after reder DOM
+
+            }
+        });
+    </script>
+</body>
+
+</html>
